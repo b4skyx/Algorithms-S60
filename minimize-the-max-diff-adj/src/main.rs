@@ -4,45 +4,45 @@ fn min(arr: Vec<i32>, n: usize) -> i32 {
         println!("Too Large");
         return 0;
     }
-    let mut diff_vec = vec![0; arr.len() - 1];
+
     // Create a differene vec and fill the difference
+    let mut diff_vec = vec![0; arr.len() - 1];
     for i in 0..(diff_vec.len() as usize) {
         diff_vec[i] = arr[i + 1] - arr[i];
     }
 
     let k = diff_vec.len() - n; // window_size of diff_vec
-    let mut k_win: Vec<usize> = Vec::new(); //window vec
+    let mut win_i: Vec<usize> = Vec::new(); //window vec to store index
 
-    //push longest strictly dec order in win with largest at index 0
-    for i in 0..k {
-        while !k_win.is_empty() && diff_vec[i] >= diff_vec[k_win[0]] {
-            k_win.pop();
+    //push longest strictly dec order in win with largest at index 0 for frame 1
+    for i in 0..k + 1 {
+        while !win_i.is_empty() && diff_vec[i] >= diff_vec[win_i[0]] {
+            win_i.pop();
         }
-        k_win.push(i);
+        win_i.push(i);
     }
-
-    let mut res = i32::max_value();
+    let mut res = diff_vec[win_i[0]];
 
     // move the window and check longest dec order
     for i in k..diff_vec.len() {
-        //update result
-        if diff_vec[0] < res {
-            res = diff_vec[0];
-        }
-
         //remove everything outside window
-        while !k_win.is_empty() && k_win[0] <= i - k {
-            k_win.remove(0);
+        while !win_i.is_empty() && win_i[0] < i - k {
+            win_i.remove(0);
         }
 
         //remove elements if some lager difference is found
-        while !k_win.is_empty() && diff_vec[i] >= diff_vec[*k_win.last().unwrap()] {
-            k_win.pop();
+        while !win_i.is_empty() && diff_vec[i] >= diff_vec[*win_i.last().unwrap()] {
+            win_i.pop();
         }
-        k_win.push(i);
+        win_i.push(i);
+
+        //update result
+        if diff_vec[win_i[0]] < res {
+            res = diff_vec[win_i[0]];
+        }
     }
     //check for last window
-    if diff_vec[0] < res {
+    if diff_vec[win_i[0]] < res {
         res = diff_vec[0];
     }
     return res;
