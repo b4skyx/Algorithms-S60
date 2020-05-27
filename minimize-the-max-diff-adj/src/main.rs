@@ -1,51 +1,36 @@
 use std::io;
+
 fn min(arr: Vec<i32>, n: usize) -> i32 {
     if n >= arr.len() - 1 {
-        println!("Too Large");
+        println!("Too large");
         return 0;
     }
-
-    // Create a differene vec and fill the difference
-    let mut diff_vec = vec![0; arr.len() - 1];
-    for i in 0..(diff_vec.len() as usize) {
-        diff_vec[i] = arr[i + 1] - arr[i];
+    let mut diff_vec = Vec::new();
+    for i in 0..(arr.len() - 1) {
+        diff_vec.push(arr[i + 1] - arr[i]);
     }
-
-    let k = diff_vec.len() - n; // window_size of diff_vec
-    let mut win_i: Vec<usize> = Vec::new(); //window vec to store index
-
-    //push longest strictly dec order in win with largest at index 0 for frame 1
-    for i in 0..k + 1 {
-        while !win_i.is_empty() && diff_vec[i] >= diff_vec[win_i[0]] {
-            win_i.pop();
+    let k = diff_vec.len() - n; // window_size
+    let mut ki_win: Vec<usize> = Vec::new();
+    for i in 0..k {
+        while !ki_win.is_empty() && diff_vec[ki_win[0]] < diff_vec[i] {
+            ki_win.pop();
         }
-        win_i.push(i);
+        ki_win.push(i);
     }
-    let mut res = diff_vec[win_i[0]];
-
-    // move the window and check longest dec order
+    let mut res = diff_vec[ki_win[0]];
     for i in k..diff_vec.len() {
-        //remove everything outside window
-        while !win_i.is_empty() && win_i[0] < i - k {
-            win_i.remove(0);
+        while !ki_win.is_empty() && ki_win[0] < i - k {
+            ki_win.remove(0);
         }
-
-        //remove elements if some lager difference is found
-        while !win_i.is_empty() && diff_vec[i] >= diff_vec[*win_i.last().unwrap()] {
-            win_i.pop();
+        while !ki_win.is_empty() && diff_vec[*ki_win.last().unwrap()] <= diff_vec[i] {
+            ki_win.pop();
         }
-        win_i.push(i);
-
-        //update result
-        if diff_vec[win_i[0]] < res {
-            res = diff_vec[win_i[0]];
+        ki_win.push(i);
+        if res > diff_vec[ki_win[0]] {
+            res = diff_vec[ki_win[0]];
         }
     }
-    //check for last window
-    if diff_vec[win_i[0]] < res {
-        res = diff_vec[0];
-    }
-    return res;
+    res
 }
 
 fn read_input() -> Vec<i32> {
