@@ -1,11 +1,4 @@
 use std::io;
-fn max(a: i32, b: i32) -> i32 {
-    if a >= b {
-        return a;
-    } else {
-        return b;
-    }
-}
 fn lcs(a: Vec<char>, b: Vec<char>) {
     let alen = a.len();
     let blen = b.len();
@@ -18,7 +11,7 @@ fn lcs(a: Vec<char>, b: Vec<char>) {
             } else if a[i - 1] == a[j - 1] {
                 mem[i][j] = mem[i - 1][j - 1] + 1;
             } else {
-                mem[i][j] = max(mem[i][j - 1], mem[i - 1][j]);
+                mem[i][j] = i32::max(mem[i][j - 1], mem[i - 1][j]);
             }
         }
     }
