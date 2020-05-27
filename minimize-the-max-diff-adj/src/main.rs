@@ -25,12 +25,17 @@ fn min(arr: Vec<i32>, n: usize) -> i32 {
 
     // move the window and check longest dec order
     for i in k..diff_vec.len() {
+        //update result
         if diff_vec[0] < res {
             res = diff_vec[0];
         }
+
+        //remove everything outside window
         while !k_win.is_empty() && k_win[0] <= i - k {
             k_win.remove(0);
         }
+
+        //remove elements if some lager difference is found
         while !k_win.is_empty() && diff_vec[i] >= diff_vec[*k_win.last().unwrap()] {
             k_win.pop();
         }
