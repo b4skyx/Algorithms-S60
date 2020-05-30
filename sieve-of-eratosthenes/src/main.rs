@@ -10,7 +10,7 @@ fn prime_c(range: u32) {
             prime_vec.push(num);
         }
     }
-    // println!("{:?}", prime_vec);
+    println!("{:?}", prime_vec);
     println!("{}", prime_vec.len());
 }
 
@@ -40,5 +40,5 @@ fn main() {
         .expect("Error reading input");
     let range = range.trim().parse::<u32>().unwrap();
     // prime_c(range.clone());
-    prime_v(range);
+    prime_c(range);
 }

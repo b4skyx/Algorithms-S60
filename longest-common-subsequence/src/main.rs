@@ -8,7 +8,7 @@ fn lcs(a: Vec<char>, b: Vec<char>) {
         for j in 0..(blen as usize + 1) {
             if i == 0 || j == 0 {
                 mem[i][j] = 0;
-            } else if a[i - 1] == a[j - 1] {
+            } else if a[i - 1] == b[j - 1] {
                 mem[i][j] = mem[i - 1][j - 1] + 1;
             } else {
                 mem[i][j] = i32::max(mem[i][j - 1], mem[i - 1][j]);
