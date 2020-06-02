@@ -1,4 +1,5 @@
-fn knapsack(elements: Vec<u32>, sum: usize) -> bool {
+use std::io;
+fn knapsack(elements: Vec<i32>, sum: usize) -> bool {
     let alen = elements.len();
     let mut mem = vec![vec![false; sum + 1]; alen + 1];
     for i in 0..alen + 1 {
@@ -14,8 +15,20 @@ fn knapsack(elements: Vec<u32>, sum: usize) -> bool {
             }
         }
     }
+    for i in 0..alen + 1 {
+        println!("{:?}", mem[i]);
+    }
     mem[alen][sum]
 }
+fn read_input() -> Vec<i32> {
+    let mut ipt = String::new();
+    io::stdin().read_line(&mut ipt).expect("Failed to readline");
+    ipt.split_whitespace()
+        .map(|x| x.trim().parse::<i32>().unwrap())
+        .collect::<Vec<i32>>()
+}
 fn main() {
-    println!("Hello, world!");
+    let sum = read_input()[0];
+    let elements = read_input();
+    println!("{}\t", knapsack(elements, sum as usize));
 }
